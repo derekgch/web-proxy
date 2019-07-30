@@ -1,7 +1,7 @@
-import React, { useState } from 'react'
-
+import React, { useState } from 'react';
+import './InputForm.css';
 interface Props {
-  
+  handleSumbit:(url:string) => void
 }
 
 const InputForm: React.FC<Props> = (props) => {
@@ -10,8 +10,6 @@ const InputForm: React.FC<Props> = (props) => {
 
   const handleChange=(event:React.ChangeEvent<HTMLInputElement>)=>{
     const { name, value } = event.target;
-    console.log(name);
-    console.log(value);
     switch (name) {
       case 'url':
         setUrl(value);
@@ -23,23 +21,31 @@ const InputForm: React.FC<Props> = (props) => {
         break;
     }
   }
+  const handleSumbit = (event:React.FormEvent<HTMLFormElement>) =>{
+    event.preventDefault();
+    event.stopPropagation();
+    props.handleSumbit(url);
+  }
+
   return (
-    <div>
-      <label defaultValue={"URL:"}>
-        <input  type='text' 
-                value={url} 
-                placeholder={"Input url"} 
-                onChange={handleChange}
-                name="url">
-        </input> 
-      </label>
-      <label defaultValue={"Optional:"}>
-        <input  type='text' 
-                value={optional} 
-                onChange={handleChange}
-                placeholder={"optional input field"} >
-        </input>
-      </label>
+    <div className="input-form">
+      <form onSubmit={handleSumbit}>
+      <input  type='text' 
+              value={url} 
+              placeholder={"Input url"} 
+              onChange={handleChange}
+              name="url">
+      </input> 
+
+      <input  type='text' 
+              value={optional} 
+              onChange={handleChange}
+              placeholder={"optional input field"} >
+      </input>
+      <button>
+        submit
+      </button>
+      </form>
     </div>
   )
 }
